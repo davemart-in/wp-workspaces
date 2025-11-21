@@ -328,10 +328,24 @@
 		}, 3000);
 	}
 
+	/**
+	 * Position workspace switcher after WordPress logo.
+	 */
+	function positionWorkspaceSwitcher() {
+		var $switcher = $('#wp-admin-bar-wp-workspace-switcher');
+		var $wpLogo = $('#wp-admin-bar-wp-logo');
+		
+		if ($switcher.length && $wpLogo.length) {
+			// Move switcher right after WordPress logo
+			$switcher.insertAfter($wpLogo);
+		}
+	}
+
 	// Initialize on document ready
 	$(document).ready(function() {
 		init();
 		initCustomizeMode();
+		positionWorkspaceSwitcher();
 	});
 
 })(jQuery);

@@ -169,12 +169,13 @@ class WP_Workspaces_Admin {
 			$active = $registry->get( 'all' );
 		}
 
-		// Add parent menu item (the switcher pill).
+		// Add parent menu item (the switcher pill) - positioned after wp-logo.
 		$wp_admin_bar->add_node( array(
-			'id'    => 'wp-workspace-switcher',
-			'title' => '<span class="wp-workspace-icon ' . esc_attr( $active['icon'] ) . '"></span><span class="wp-workspace-label">' . esc_html( $active['label'] ) . '</span>',
-			'href'  => '#',
-			'meta'  => array(
+			'id'     => 'wp-workspace-switcher',
+			'parent' => false,
+			'title'  => '<span class="wp-workspace-icon dashicons ' . esc_attr( $active['icon'] ) . '"></span> <span class="wp-workspace-label">' . esc_html( $active['label'] ) . '</span>',
+			'href'   => '#',
+			'meta'   => array(
 				'class' => 'wp-workspace-switcher-parent',
 			),
 		));
@@ -186,7 +187,7 @@ class WP_Workspaces_Admin {
 			$wp_admin_bar->add_node( array(
 				'parent' => 'wp-workspace-switcher',
 				'id'     => 'wp-workspace-' . $workspace_id,
-				'title'  => '<span class="' . esc_attr( $workspace['icon'] ) . '"></span> <span class="wp-workspace-label-text">' . esc_html( $workspace['label'] ) . '</span>',
+				'title'  => '<span class="dashicons ' . esc_attr( $workspace['icon'] ) . '"></span> <span class="wp-workspace-label-text">' . esc_html( $workspace['label'] ) . '</span>',
 				'href'   => '#workspace-' . esc_attr( $workspace_id ),
 				'meta'   => array(
 					'class'    => 'wp-workspace-item' . ( $is_active ? ' active' : '' ),
