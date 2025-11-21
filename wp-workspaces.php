@@ -77,12 +77,14 @@ class WP_Workspaces {
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-sidebar-filter.php';
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-admin-bar.php';
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-distraction-free.php';
+		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-user-customization.php';
 		
 		WP_Workspace_Registry::get_instance();
 		WP_Workspaces_Admin::get_instance();
 		WP_Workspaces_Sidebar_Filter::get_instance();
 		WP_Workspaces_Admin_Bar::get_instance();
 		WP_Workspaces_Distraction_Free::get_instance();
+		WP_Workspaces_User_Customization::get_instance();
 	}
 }
 
