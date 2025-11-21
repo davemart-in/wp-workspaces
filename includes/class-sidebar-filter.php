@@ -282,7 +282,8 @@ class WP_Workspaces_Sidebar_Filter {
 					type: 'POST',
 					data: {
 						action: 'wp_workspaces_switch',
-						workspace_id: workspaceId
+						workspace_id: workspaceId,
+						nonce: wpWorkspaces.nonce
 					},
 					success: function(response) {
 						if (response.success) {

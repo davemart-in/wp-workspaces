@@ -153,6 +153,11 @@ class WP_Workspaces_User_Customization {
 	 * AJAX handler for toggling menu items.
 	 */
 	public function ajax_toggle_item() {
+		// Verify nonce.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wp_workspaces_nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-workspaces' ) ) );
+		}
+
 		// Verify request.
 		if ( ! isset( $_POST['menu_slug'] ) || ! isset( $_POST['workspace_id'] ) || ! isset( $_POST['action_type'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid request.', 'wp-workspaces' ) ) );
@@ -217,6 +222,11 @@ class WP_Workspaces_User_Customization {
 	 * AJAX handler for resetting customizations.
 	 */
 	public function ajax_reset_customizations() {
+		// Verify nonce.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wp_workspaces_nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-workspaces' ) ) );
+		}
+
 		if ( ! isset( $_POST['workspace_id'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid request.', 'wp-workspaces' ) ) );
 		}

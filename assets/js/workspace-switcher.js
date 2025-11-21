@@ -12,14 +12,46 @@
 	 */
 	function init() {
 		// Handle workspace switching clicks.
-		$('#wpadminbar').on('click', '.wp-workspace-item', function(e) {
+		$('#wpadminbar').on('click', '#wp-admin-bar-wp-workspace-switcher .ab-submenu a', function(e) {
 			e.preventDefault();
 			
-			var $item = $(this);
-			var workspaceId = $item.data('workspace');
+			var $link = $(this);
+			var $item = $link.parent('li');
+			
+			// Try multiple methods to get workspace ID
+			var workspaceId = null;
+			
+			// Method 1: From data attribute on li
+			workspaceId = $item.data('workspace-id') || $item.data('workspace');
+			
+			// Method 2: From href fragment
+			if (!workspaceId) {
+				var href = $link.attr('href');
+				if (href && href.indexOf('#workspace-') === 0) {
+					workspaceId = href.replace('#workspace-', '');
+				}
+			}
+			
+			// Method 3: From li id attribute
+			if (!workspaceId) {
+				var itemId = $item.attr('id');
+				if (itemId && itemId.indexOf('wp-admin-bar-wp-workspace-') === 0) {
+					workspaceId = itemId.replace('wp-admin-bar-wp-workspace-', '');
+				}
+			}
+			
+			// Debug: log the workspace ID
+			console.log('Clicked workspace:', workspaceId, 'Link:', $link.attr('href'), 'Item ID:', $item.attr('id'));
+			
+			// Check if workspace ID was found
+			if (!workspaceId) {
+				console.error('No workspace ID found. Element:', $item);
+				return;
+			}
 			
 			// Don't switch if already active.
 			if ($item.hasClass('active')) {
+				console.log('Workspace already active');
 				return;
 			}
 			
@@ -42,7 +74,8 @@
 			type: 'POST',
 			data: {
 				action: 'wp_workspaces_switch',
-				workspace_id: workspaceId
+				workspace_id: workspaceId,
+				nonce: wpWorkspaces.nonce
 			},
 			success: function(response) {
 				if (response.success) {
@@ -214,7 +247,8 @@
 				action: 'wp_workspaces_toggle_item',
 				menu_slug: href,
 				workspace_id: wpWorkspaces.activeWorkspace,
-				action_type: actionType
+				action_type: actionType,
+				nonce: wpWorkspaces.nonce
 			},
 			success: function(response) {
 				if (response.success) {
@@ -259,7 +293,8 @@
 			type: 'POST',
 			data: {
 				action: 'wp_workspaces_reset_customizations',
-				workspace_id: wpWorkspaces.activeWorkspace
+				workspace_id: wpWorkspaces.activeWorkspace,
+				nonce: wpWorkspaces.nonce
 			},
 			success: function(response) {
 				if (response.success) {

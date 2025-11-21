@@ -102,6 +102,7 @@ class WP_Workspaces_Admin {
 				'currentUser'      => get_current_user_id(),
 				'activeWorkspace'  => $this->get_active_workspace(),
 				'workspaces'       => $workspace_data,
+				'nonce'            => wp_create_nonce( 'wp_workspaces_nonce' ),
 			)
 		);
 	}
@@ -185,11 +186,12 @@ class WP_Workspaces_Admin {
 			$wp_admin_bar->add_node( array(
 				'parent' => 'wp-workspace-switcher',
 				'id'     => 'wp-workspace-' . $workspace_id,
-				'title'  => '<span class="' . esc_attr( $workspace['icon'] ) . '"></span> ' . esc_html( $workspace['label'] ),
-				'href'   => '#',
+				'title'  => '<span class="' . esc_attr( $workspace['icon'] ) . '"></span> <span class="wp-workspace-label-text">' . esc_html( $workspace['label'] ) . '</span>',
+				'href'   => '#workspace-' . esc_attr( $workspace_id ),
 				'meta'   => array(
-					'class'           => 'wp-workspace-item' . ( $is_active ? ' active' : '' ),
-					'data-workspace'  => esc_attr( $workspace_id ),
+					'class'    => 'wp-workspace-item' . ( $is_active ? ' active' : '' ),
+					'onclick'  => 'return false;',
+					'data-workspace-id' => $workspace_id,
 				),
 			));
 		}
@@ -199,6 +201,11 @@ class WP_Workspaces_Admin {
 	 * AJAX handler for switching workspaces.
 	 */
 	public function ajax_switch_workspace() {
+		// Verify nonce.
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wp_workspaces_nonce' ) ) {
+			wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-workspaces' ) ) );
+		}
+
 		// Check if workspace ID is provided.
 		if ( ! isset( $_POST['workspace_id'] ) ) {
 			wp_send_json_error( array( 'message' => __( 'Workspace ID not provided.', 'wp-workspaces' ) ) );
