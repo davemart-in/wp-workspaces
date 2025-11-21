@@ -75,10 +75,12 @@ class WP_Workspaces {
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-workspace-registry.php';
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-wp-workspaces-admin.php';
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-sidebar-filter.php';
+		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-admin-bar.php';
 		
 		WP_Workspace_Registry::get_instance();
 		WP_Workspaces_Admin::get_instance();
 		WP_Workspaces_Sidebar_Filter::get_instance();
+		WP_Workspaces_Admin_Bar::get_instance();
 	}
 }
 

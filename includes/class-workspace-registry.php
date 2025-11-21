@@ -192,9 +192,12 @@ class WP_Workspace_Registry {
 				'edit-comments.php',  // Comments
 			),
 			'admin_bar_items'  => array(
+				'new-content',        // New Content group
 				'new-post',
 				'new-page',
 				'new-media',
+				'comments',           // Comments
+				'search',             // Search
 			),
 			'distraction_free' => true,
 			'order'            => 2,
@@ -209,8 +212,14 @@ class WP_Workspace_Registry {
 				'upload.php',         // Media
 			),
 			'admin_bar_items'  => array(
+				'appearance',         // Appearance group
 				'customize',
-				'site-name',
+				'themes',
+				'widgets',
+				'menus',
+				'background',
+				'header',
+				'new-media',          // New Media
 			),
 			'distraction_free' => true,
 			'order'            => 3,
@@ -228,6 +237,10 @@ class WP_Workspace_Registry {
 			),
 			'admin_bar_items'  => array(
 				'new-product',
+				'woocommerce',        // WooCommerce menu group
+				'wc-reports',         // Reports
+				'wc-orders',          // Orders
+				'wc-customers',       // Customers
 			),
 			'distraction_free' => false,
 			'order'            => 4,
@@ -249,6 +262,8 @@ class WP_Workspace_Registry {
 				'new-user',
 				'updates',
 				'site-health',
+				'debug-bar',          // Debug Bar (if installed)
+				'query-monitor',      // Query Monitor (if installed)
 			),
 			'distraction_free' => false,
 			'order'            => 5,
