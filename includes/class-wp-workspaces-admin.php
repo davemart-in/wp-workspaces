@@ -73,13 +73,29 @@ class WP_Workspaces_Admin {
 			true
 		);
 
+		// Get available workspaces.
+		$registry = WP_Workspace_Registry::get_instance();
+		$workspaces = $registry->get_all( true ); // Filter by condition.
+
+		// Prepare workspace data for JS.
+		$workspace_data = array();
+		foreach ( $workspaces as $id => $workspace ) {
+			$workspace_data[ $id ] = array(
+				'id'    => $workspace['id'],
+				'label' => $workspace['label'],
+				'icon'  => $workspace['icon'],
+			);
+		}
+
 		// Pass data to JavaScript.
 		wp_localize_script(
 			'wp-workspaces-admin',
 			'wpWorkspaces',
 			array(
-				'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
-				'currentUser' => get_current_user_id(),
+				'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+				'currentUser'      => get_current_user_id(),
+				'activeWorkspace'  => $this->get_active_workspace(),
+				'workspaces'       => $workspace_data,
 			)
 		);
 	}

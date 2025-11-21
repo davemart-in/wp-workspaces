@@ -72,9 +72,37 @@ class WP_Workspaces {
 	 * Load admin functionality.
 	 */
 	public function load_admin() {
+		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-workspace-registry.php';
 		require_once WP_WORKSPACES_PLUGIN_DIR . 'includes/class-wp-workspaces-admin.php';
+		
+		WP_Workspace_Registry::get_instance();
 		WP_Workspaces_Admin::get_instance();
 	}
+}
+
+/**
+ * Register a workspace.
+ *
+ * This is a helper function that wraps the registry's register method.
+ *
+ * @param string $id Workspace ID.
+ * @param array  $args Workspace arguments {
+ *     Optional. Array of workspace arguments.
+ *
+ *     @type string   $label            Workspace label (human-readable name).
+ *     @type string   $icon             Dashicon class for the workspace.
+ *     @type array    $sidebar_items    Array of sidebar menu slugs to show.
+ *     @type array    $admin_bar_items  Array of admin bar node IDs to show.
+ *     @type bool     $distraction_free Whether to enable distraction-free mode.
+ *     @type bool     $fallback         Whether this is a fallback workspace.
+ *     @type int      $order            Sort order for the workspace.
+ *     @type callable $condition        Callback to determine if workspace should be shown.
+ * }
+ * @return bool True on success, false on failure.
+ */
+function register_admin_workspace( $id, $args = array() ) {
+	$registry = WP_Workspace_Registry::get_instance();
+	return $registry->register( $id, $args );
 }
 
 /**
