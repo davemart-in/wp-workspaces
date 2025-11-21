@@ -46,7 +46,7 @@
 			},
 			success: function(response) {
 				if (response.success) {
-					// Update body class.
+					// Update body class for instant CSS-based filtering.
 					var bodyClasses = document.body.className;
 					bodyClasses = bodyClasses.replace(/admin-workspace-\S+/g, '');
 					document.body.className = bodyClasses + ' admin-workspace-' + workspaceId;
@@ -62,8 +62,12 @@
 					$('#wp-admin-bar-wp-workspace-switcher .wp-workspace-label')
 						.text(workspace.label);
 					
-					// Reload the page to apply sidebar filtering.
-					location.reload();
+					// Remove loading state.
+					$('body').removeClass('wp-workspace-switching');
+					
+					// Check if current page should be visible in new workspace.
+					// If the current menu item is now hidden, we should show a notice or redirect.
+					checkCurrentPageVisibility();
 				} else {
 					console.error('Workspace switch failed:', response.data.message);
 					$('body').removeClass('wp-workspace-switching');
@@ -74,6 +78,20 @@
 				$('body').removeClass('wp-workspace-switching');
 			}
 		});
+	}
+	
+	/**
+	 * Check if the current page is visible in the active workspace.
+	 * If not, reload to show the soft redirect notice.
+	 */
+	function checkCurrentPageVisibility() {
+		// Get the current page's menu item.
+		var $currentMenuItem = $('#adminmenu li.current, #adminmenu li.wp-has-current-submenu');
+		
+		// If current menu item is hidden by CSS, reload to show soft redirect notice.
+		if ($currentMenuItem.length > 0 && $currentMenuItem.is(':hidden')) {
+			location.reload();
+		}
 	}
 
 	// Initialize on document ready
