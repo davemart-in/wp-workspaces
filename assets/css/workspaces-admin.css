@@ -143,12 +143,52 @@ body.wp-workspace-switching {
 }
 
 /* ==========================================================================
+   Distraction-Free Mode
+   ========================================================================== */
+
+/* Additional distraction-free enhancements */
+body.wp-workspaces-distraction-free #wp-admin-bar-comments,
+body.wp-workspaces-distraction-free .wrap > .notice:not(.notice-error):not(.error),
+body.wp-workspaces-distraction-free .wrap > .updated:not(.notice-error) {
+	/* Subtle styling for non-critical notices */
+	background: transparent;
+	border-left-width: 2px;
+	opacity: 0.7;
+	padding: 8px 12px;
+	font-size: 13px;
+}
+
+body.wp-workspaces-distraction-free #wp-admin-bar-comments:hover,
+body.wp-workspaces-distraction-free .wrap > .notice:hover,
+body.wp-workspaces-distraction-free .wrap > .updated:hover {
+	opacity: 1;
+}
+
+/* Clean content area focus */
+body.wp-workspaces-distraction-free .wrap {
+	position: relative;
+}
+
+/* Highlight active content areas */
+body.wp-workspaces-distraction-free .edit-post-visual-editor,
+body.wp-workspaces-distraction-free .editor-styles-wrapper,
+body.wp-workspaces-distraction-free #content {
+	background: #fff;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
    Workspace-specific UI Adjustments
    ========================================================================== */
 
-/* Distraction-free workspaces can have reduced chrome */
-.admin-workspace-write,
-.admin-workspace-design {
-	/* Placeholder for distraction-free mode styles */
+/* Write workspace - focus on content */
+.admin-workspace-write.wp-workspaces-distraction-free .wrap > h1 {
+	margin-bottom: 30px;
+}
+
+/* Design workspace - visual focus */
+.admin-workspace-design.wp-workspaces-distraction-free #customize-controls,
+.admin-workspace-design.wp-workspaces-distraction-free .theme-browser {
+	box-shadow: none;
 }
 

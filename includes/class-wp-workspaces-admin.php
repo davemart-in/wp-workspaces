@@ -115,6 +115,11 @@ class WP_Workspaces_Admin {
 	public function add_admin_body_class( $classes ) {
 		$active_workspace = $this->get_active_workspace();
 		$classes .= ' admin-workspace-' . esc_attr( $active_workspace );
+		
+		// Add distraction-free class if applicable.
+		$distraction_free = WP_Workspaces_Distraction_Free::get_instance();
+		$classes = $distraction_free->add_body_class( $classes );
+		
 		return $classes;
 	}
 
