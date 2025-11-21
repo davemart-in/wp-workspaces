@@ -4,6 +4,133 @@
  * @package WP_Workspaces
  */
 
-/* Placeholder for workspace-specific styles */
-/* Workspace body classes will be: .admin-workspace-all, .admin-workspace-write, etc. */
+/* ==========================================================================
+   Workspace Switcher in Admin Bar
+   ========================================================================== */
+
+#wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+	padding: 0 12px;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.1);
+	transition: background 0.2s ease;
+}
+
+#wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
+
+#wpadminbar .wp-workspace-icon {
+	display: inline-block;
+	margin-right: 6px;
+}
+
+#wpadminbar .wp-workspace-icon::before {
+	font-family: dashicons;
+	font-size: 18px;
+	vertical-align: middle;
+}
+
+#wpadminbar .wp-workspace-label {
+	font-weight: 500;
+}
+
+/* Workspace dropdown items */
+#wpadminbar .wp-workspace-item.active {
+	background: rgba(255, 255, 255, 0.1);
+}
+
+#wpadminbar .wp-workspace-item .dashicons,
+#wpadminbar .wp-workspace-item .dashicons-before::before {
+	margin-right: 8px;
+}
+
+/* Loading state */
+body.wp-workspace-switching {
+	cursor: wait;
+	pointer-events: none;
+	opacity: 0.7;
+}
+
+/* ==========================================================================
+   Workspace Color Accents
+   ========================================================================== */
+
+/* All Workspace - Default Gray */
+.admin-workspace-all #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+	background: rgba(160, 160, 160, 0.2);
+	border-left: 3px solid #a0a0a0;
+}
+
+/* Write Workspace - Blue */
+.admin-workspace-write #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+	background: rgba(33, 150, 243, 0.2);
+	border-left: 3px solid #2196f3;
+}
+
+/* Design Workspace - Purple */
+.admin-workspace-design #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+	background: rgba(156, 39, 176, 0.2);
+	border-left: 3px solid #9c27b0;
+}
+
+/* Commerce Workspace - Green */
+.admin-workspace-commerce #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+	background: rgba(76, 175, 80, 0.2);
+	border-left: 3px solid #4caf50;
+}
+
+/* Manage Workspace - Orange */
+.admin-workspace-manage #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+	background: rgba(255, 152, 0, 0.2);
+	border-left: 3px solid #ff9800;
+}
+
+/* ==========================================================================
+   Mobile Responsive Styles
+   ========================================================================== */
+
+@media screen and (max-width: 782px) {
+	/* Mobile admin bar adjustments */
+	#wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+		padding: 0 10px;
+		font-size: 14px;
+	}
+	
+	#wpadminbar .wp-workspace-label {
+		display: inline;
+	}
+	
+	/* Position in mobile menu */
+	#wpadminbar.mobile #wp-admin-bar-wp-workspace-switcher {
+		position: relative;
+		top: auto;
+	}
+	
+	/* Make dropdown items more touch-friendly */
+	#wpadminbar .wp-workspace-item a {
+		padding: 12px 16px;
+		font-size: 16px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	/* Hide label on very small screens, show icon only */
+	#wpadminbar .wp-workspace-label {
+		display: none;
+	}
+	
+	#wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
+		padding: 0 8px;
+	}
+}
+
+/* ==========================================================================
+   Workspace-specific UI Adjustments
+   ========================================================================== */
+
+/* Distraction-free workspaces can have reduced chrome */
+.admin-workspace-write,
+.admin-workspace-design {
+	/* Placeholder for distraction-free mode styles */
+}
 

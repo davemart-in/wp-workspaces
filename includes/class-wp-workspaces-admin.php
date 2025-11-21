@@ -50,6 +50,12 @@ class WP_Workspaces_Admin {
 
 		// Add admin body classes.
 		add_filter( 'admin_body_class', array( $this, 'add_admin_body_class' ) );
+
+		// Add workspace switcher to admin bar.
+		add_action( 'admin_bar_menu', array( $this, 'add_workspace_switcher' ), 5 );
+
+		// AJAX handler for switching workspaces.
+		add_action( 'wp_ajax_wp_workspaces_switch', array( $this, 'ajax_switch_workspace' ) );
 	}
 
 	/**
@@ -139,6 +145,78 @@ class WP_Workspaces_Admin {
 	public function set_active_workspace( $workspace_id ) {
 		$user_id = get_current_user_id();
 		return update_user_meta( $user_id, 'wp_workspaces_active', sanitize_key( $workspace_id ) );
+	}
+
+	/**
+	 * Add workspace switcher to admin bar.
+	 *
+	 * @param WP_Admin_Bar $wp_admin_bar Admin bar instance.
+	 */
+	public function add_workspace_switcher( $wp_admin_bar ) {
+		$registry = WP_Workspace_Registry::get_instance();
+		$workspaces = $registry->get_all( true ); // Filter by condition.
+		$active_workspace = $this->get_active_workspace();
+
+		// Get active workspace data.
+		$active = $registry->get( $active_workspace );
+		if ( ! $active ) {
+			$active = $registry->get( 'all' );
+		}
+
+		// Add parent menu item (the switcher pill).
+		$wp_admin_bar->add_node( array(
+			'id'    => 'wp-workspace-switcher',
+			'title' => '<span class="wp-workspace-icon ' . esc_attr( $active['icon'] ) . '"></span><span class="wp-workspace-label">' . esc_html( $active['label'] ) . '</span>',
+			'href'  => '#',
+			'meta'  => array(
+				'class' => 'wp-workspace-switcher-parent',
+			),
+		));
+
+		// Add each workspace as a submenu item.
+		foreach ( $workspaces as $workspace_id => $workspace ) {
+			$is_active = ( $workspace_id === $active_workspace );
+
+			$wp_admin_bar->add_node( array(
+				'parent' => 'wp-workspace-switcher',
+				'id'     => 'wp-workspace-' . $workspace_id,
+				'title'  => '<span class="' . esc_attr( $workspace['icon'] ) . '"></span> ' . esc_html( $workspace['label'] ),
+				'href'   => '#',
+				'meta'   => array(
+					'class'           => 'wp-workspace-item' . ( $is_active ? ' active' : '' ),
+					'data-workspace'  => esc_attr( $workspace_id ),
+				),
+			));
+		}
+	}
+
+	/**
+	 * AJAX handler for switching workspaces.
+	 */
+	public function ajax_switch_workspace() {
+		// Check if workspace ID is provided.
+		if ( ! isset( $_POST['workspace_id'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'Workspace ID not provided.', 'wp-workspaces' ) ) );
+		}
+
+		$workspace_id = sanitize_key( $_POST['workspace_id'] );
+		$registry = WP_Workspace_Registry::get_instance();
+
+		// Verify workspace exists.
+		if ( ! $registry->is_registered( $workspace_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid workspace.', 'wp-workspaces' ) ) );
+		}
+
+		// Set the active workspace.
+		$this->set_active_workspace( $workspace_id );
+
+		// Return success with workspace data.
+		$workspace = $registry->get( $workspace_id );
+		wp_send_json_success( array(
+			'workspace_id' => $workspace_id,
+			'workspace'    => $workspace,
+			'message'      => sprintf( __( 'Switched to %s workspace', 'wp-workspaces' ), $workspace['label'] ),
+		));
 	}
 }
 
