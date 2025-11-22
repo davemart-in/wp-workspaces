@@ -173,6 +173,14 @@ class WP_Workspaces_Sidebar_Filter {
 			return;
 		}
 
+		// Get active workspace - never show notice in 'all' (Default) workspace.
+		$admin = WP_Workspaces_Admin::get_instance();
+		$active_workspace_id = $admin->get_active_workspace();
+
+		if ( 'all' === $active_workspace_id ) {
+			return;
+		}
+
 		$user_id = get_current_user_id();
 		$hidden_menus = get_transient( 'wp_workspaces_hidden_menus_' . $user_id );
 
