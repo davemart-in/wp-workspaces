@@ -186,8 +186,13 @@ class WP_Workspace_Registry {
 			'icon'             => 'dashicons-edit',
 			'sidebar_items'    => array(
 				'edit.php',           // Posts
+				'post-new.php',       // Add New Post
+				'edit-tags.php?taxonomy=category', // Categories
+				'edit-tags.php?taxonomy=post_tag', // Tags
 				'edit.php?post_type=page', // Pages
+				'post-new.php?post_type=page', // Add New Page
 				'upload.php',         // Media
+				'media-new.php',      // Upload New Media
 				'edit-comments.php',  // Comments
 				'options-writing.php', // Settings > Writing
 				'options-reading.php', // Settings > Reading
