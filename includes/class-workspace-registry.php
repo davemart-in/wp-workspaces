@@ -190,6 +190,9 @@ class WP_Workspace_Registry {
 				'edit.php?post_type=page', // Pages
 				'upload.php',         // Media
 				'edit-comments.php',  // Comments
+				'options-writing.php', // Settings > Writing
+				'options-reading.php', // Settings > Reading
+				'options-discussion.php', // Settings > Discussion
 			),
 			'admin_bar_items'  => array(
 				'new-content',        // New Content group

@@ -39,19 +39,15 @@
 					workspaceId = itemId.replace('wp-admin-bar-wp-workspace-', '');
 				}
 			}
-			
-			// Debug: log the workspace ID
-			console.log('Clicked workspace:', workspaceId, 'Link:', $link.attr('href'), 'Item ID:', $item.attr('id'));
-			
+
 			// Check if workspace ID was found
 			if (!workspaceId) {
 				console.error('No workspace ID found. Element:', $item);
 				return;
 			}
-			
+
 			// Don't switch if already active.
 			if ($item.hasClass('active')) {
-				console.log('Workspace already active');
 				return;
 			}
 			

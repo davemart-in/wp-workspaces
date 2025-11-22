@@ -47,10 +47,10 @@ class WP_Workspaces_Sidebar_Filter {
 	private function init_hooks() {
 		// Filter admin menu at late priority to catch all registered menus.
 		add_action( 'admin_menu', array( $this, 'filter_admin_menu' ), 999 );
-		
-		// Add inline CSS for hiding menu items.
-		add_action( 'admin_head', array( $this, 'add_menu_hiding_css' ) );
-		
+
+		// Add inline CSS for hiding menu items - use very late priority to ensure submenu is populated.
+		add_action( 'admin_head', array( $this, 'add_menu_hiding_css' ), 999 );
+
 		// Check for soft redirect when accessing hidden pages.
 		add_action( 'admin_init', array( $this, 'check_soft_redirect' ) );
 	}
@@ -105,6 +105,8 @@ class WP_Workspaces_Sidebar_Filter {
 	 * @return bool True if allowed, false if hidden.
 	 */
 	private function is_menu_allowed( $menu_slug, $allowed_items ) {
+		global $submenu;
+
 		// Direct match.
 		if ( in_array( $menu_slug, $allowed_items, true ) ) {
 			return true;
@@ -117,6 +119,19 @@ class WP_Workspaces_Sidebar_Filter {
 			}
 		}
 
+		// Check if this is a parent menu that has allowed submenu items.
+		// For example, if 'options-writing.php' is allowed, we should show 'options-general.php' (Settings).
+		if ( isset( $submenu[ $menu_slug ] ) ) {
+			foreach ( $submenu[ $menu_slug ] as $submenu_item ) {
+				$submenu_slug = $submenu_item[2];
+
+				// Check if this submenu is in allowed items.
+				if ( in_array( $submenu_slug, $allowed_items, true ) ) {
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
@@ -125,42 +140,79 @@ class WP_Workspaces_Sidebar_Filter {
 	 * This allows instant switching without page reload.
 	 */
 	public function add_menu_hiding_css() {
-		global $menu;
-		
+		global $menu, $submenu;
+
 		$registry = WP_Workspace_Registry::get_instance();
 		$workspaces = $registry->get_all( false ); // Get all workspaces, don't filter by condition.
-		
+
 		echo '<style id="wp-workspaces-menu-filter">';
-		
+
 		// Generate CSS rules for each workspace.
 		foreach ( $workspaces as $workspace_id => $workspace ) {
 			// Skip 'all' workspace - it shows everything.
 			if ( 'all' === $workspace_id || empty( $workspace['sidebar_items'] ) ) {
 				continue;
 			}
-			
+
 			$allowed_items = $workspace['sidebar_items'];
-			
+
 			// Build CSS selectors for hidden menus in this workspace.
 			foreach ( $menu as $key => $item ) {
 				// Skip separators.
 				if ( false !== strpos( $item[2], 'separator' ) ) {
 					continue;
 				}
-				
+
 				$menu_slug = $item[2];
-				
+
 				// Check if this menu should be hidden in this workspace.
 				if ( ! $this->is_menu_allowed( $menu_slug, $allowed_items ) ) {
 					$escaped_slug = esc_attr( $menu_slug );
-					
+
 					// Generate workspace-specific hiding rules.
 					echo 'body.admin-workspace-' . esc_attr( $workspace_id ) . ' #adminmenu a[href="' . $escaped_slug . '"] { display: none !important; }';
 					echo 'body.admin-workspace-' . esc_attr( $workspace_id ) . ' #adminmenu li.menu-top:has(> a[href="' . $escaped_slug . '"]) { display: none !important; }';
 				}
 			}
+
+			// Hide submenu items that aren't in the allowed list.
+			foreach ( $submenu as $parent_slug => $submenu_items ) {
+				// Check if any submenu items are allowed (which would make the parent visible).
+				$has_allowed_submenu = false;
+				foreach ( $submenu_items as $submenu_item ) {
+					if ( in_array( $submenu_item[2], $allowed_items, true ) ) {
+						$has_allowed_submenu = true;
+						break;
+					}
+				}
+
+				// Only process if parent has allowed submenu items.
+				if ( ! $has_allowed_submenu ) {
+					continue;
+				}
+
+				// Hide individual submenu items that aren't allowed.
+				foreach ( $submenu_items as $submenu_item ) {
+					$submenu_slug = $submenu_item[2];
+
+					// Don't hide the parent menu's own slug (e.g., options-general.php under the Settings menu).
+					// The parent is already visible, so hiding its default item would hide the whole menu.
+					if ( $submenu_slug === $parent_slug ) {
+						continue;
+					}
+
+					// Check if this submenu item should be hidden.
+					if ( ! in_array( $submenu_slug, $allowed_items, true ) ) {
+						$escaped_submenu_slug = esc_attr( $submenu_slug );
+
+						// Generate workspace-specific hiding rules for submenu items.
+						echo 'body.admin-workspace-' . esc_attr( $workspace_id ) . ' #adminmenu a[href="' . $escaped_submenu_slug . '"] { display: none !important; }';
+						echo 'body.admin-workspace-' . esc_attr( $workspace_id ) . ' #adminmenu li:has(> a[href="' . $escaped_submenu_slug . '"]) { display: none !important; }';
+					}
+				}
+			}
 		}
-		
+
 		echo '</style>';
 	}
 
