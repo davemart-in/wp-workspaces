@@ -53,7 +53,6 @@ class WP_Workspace_Registry {
 	 */
 	private function init_hooks() {
 		add_action( 'init', array( $this, 'register_default_workspaces' ), 5 );
-		add_action( 'init', array( $this, 'scan_workspace_json_files' ), 10 );
 	}
 
 	/**
@@ -298,79 +297,6 @@ class WP_Workspace_Registry {
 	 */
 	public function is_woocommerce_active() {
 		return class_exists( 'WooCommerce' );
-	}
-
-	/**
-	 * Scan for workspace.json files in plugin directories.
-	 */
-	public function scan_workspace_json_files() {
-		// Get all active plugins.
-		$active_plugins = get_option( 'active_plugins', array() );
-
-		foreach ( $active_plugins as $plugin_file ) {
-			$plugin_dir = WP_PLUGIN_DIR . '/' . dirname( $plugin_file );
-			$json_file = $plugin_dir . '/workspace.json';
-
-			// Check if workspace.json exists.
-			if ( file_exists( $json_file ) ) {
-				$this->load_workspace_json( $json_file );
-			}
-		}
-
-		// Check multisite plugins if multisite is active.
-		if ( is_multisite() ) {
-			$network_plugins = get_site_option( 'active_sitewide_plugins', array() );
-
-			foreach ( array_keys( $network_plugins ) as $plugin_file ) {
-				$plugin_dir = WP_PLUGIN_DIR . '/' . dirname( $plugin_file );
-				$json_file = $plugin_dir . '/workspace.json';
-
-				if ( file_exists( $json_file ) ) {
-					$this->load_workspace_json( $json_file );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Load a workspace from a JSON file.
-	 *
-	 * @param string $json_file Path to the JSON file.
-	 * @return bool True on success, false on failure.
-	 */
-	private function load_workspace_json( $json_file ) {
-		// Read the JSON file.
-		$json_content = file_get_contents( $json_file );
-
-		if ( false === $json_content ) {
-			return false;
-		}
-
-		// Decode JSON.
-		$workspace_data = json_decode( $json_content, true );
-
-		if ( json_last_error() !== JSON_ERROR_NONE ) {
-			return false;
-		}
-
-		// Validate required fields.
-		if ( empty( $workspace_data['id'] ) || empty( $workspace_data['label'] ) ) {
-			return false;
-		}
-
-		// Extract workspace data.
-		$id = $workspace_data['id'];
-		$args = array(
-			'label'            => $workspace_data['label'],
-			'icon'             => isset( $workspace_data['icon'] ) ? $workspace_data['icon'] : 'dashicons-admin-generic',
-			'sidebar_items'    => isset( $workspace_data['sidebar_items'] ) ? (array) $workspace_data['sidebar_items'] : array(),
-			'admin_bar_items'  => isset( $workspace_data['admin_bar_items'] ) ? (array) $workspace_data['admin_bar_items'] : array(),
-			'distraction_free' => isset( $workspace_data['distraction_free'] ) ? (bool) $workspace_data['distraction_free'] : false,
-			'order'            => isset( $workspace_data['order'] ) ? (int) $workspace_data['order'] : 100,
-		);
-
-		// Register the workspace.
-		return $this->register( $id, $args );
 	}
 }
 
