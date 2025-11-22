@@ -89,19 +89,6 @@ class WP_Workspaces_Admin_Bar {
 
 		// Get allowed admin bar items for this workspace.
 		$allowed_items = $workspace['admin_bar_items'];
-		
-		// Get user customizations (will be implemented in Phase 7).
-		$user_id = get_current_user_id();
-		$user_customizations = get_user_meta( $user_id, 'wp_workspaces_customizations', true );
-		
-		if ( is_array( $user_customizations ) && isset( $user_customizations[ $active_workspace_id ] ) ) {
-			if ( isset( $user_customizations[ $active_workspace_id ]['admin_bar_added'] ) ) {
-				$allowed_items = array_merge( $allowed_items, $user_customizations[ $active_workspace_id ]['admin_bar_added'] );
-			}
-			if ( isset( $user_customizations[ $active_workspace_id ]['admin_bar_removed'] ) ) {
-				$allowed_items = array_diff( $allowed_items, $user_customizations[ $active_workspace_id ]['admin_bar_removed'] );
-			}
-		}
 
 		// Get all admin bar nodes.
 		$all_nodes = $wp_admin_bar->get_nodes();

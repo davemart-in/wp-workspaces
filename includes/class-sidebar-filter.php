@@ -74,21 +74,7 @@ class WP_Workspaces_Sidebar_Filter {
 
 		// Get allowed menu items for this workspace.
 		$allowed_items = $workspace['sidebar_items'];
-		
-		// Get user customizations (will be implemented in Phase 7).
 		$user_id = get_current_user_id();
-		$user_customizations = get_user_meta( $user_id, 'wp_workspaces_customizations', true );
-		
-		if ( is_array( $user_customizations ) && isset( $user_customizations[ $active_workspace_id ] ) ) {
-			// Merge user customizations with default allowed items.
-			$custom_items = $user_customizations[ $active_workspace_id ];
-			if ( isset( $custom_items['added'] ) ) {
-				$allowed_items = array_merge( $allowed_items, $custom_items['added'] );
-			}
-			if ( isset( $custom_items['removed'] ) ) {
-				$allowed_items = array_diff( $allowed_items, $custom_items['removed'] );
-			}
-		}
 
 		// Build a list of menu slugs to hide.
 		$hidden_menus = array();
@@ -154,20 +140,6 @@ class WP_Workspaces_Sidebar_Filter {
 			}
 			
 			$allowed_items = $workspace['sidebar_items'];
-			
-			// Get user customizations.
-			$user_id = get_current_user_id();
-			$user_customizations = get_user_meta( $user_id, 'wp_workspaces_customizations', true );
-			
-			if ( is_array( $user_customizations ) && isset( $user_customizations[ $workspace_id ] ) ) {
-				$custom_items = $user_customizations[ $workspace_id ];
-				if ( isset( $custom_items['added'] ) ) {
-					$allowed_items = array_merge( $allowed_items, $custom_items['added'] );
-				}
-				if ( isset( $custom_items['removed'] ) ) {
-					$allowed_items = array_diff( $allowed_items, $custom_items['removed'] );
-				}
-			}
 			
 			// Build CSS selectors for hidden menus in this workspace.
 			foreach ( $menu as $key => $item ) {
