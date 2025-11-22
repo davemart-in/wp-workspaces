@@ -234,7 +234,7 @@ class WP_Workspaces_Sidebar_Filter {
 			</p>
 			<p>
 				<a href="#" class="button button-primary wp-workspace-switch-to-all" data-workspace="all">
-					<?php esc_html_e( 'Switch to "All" Workspace', 'wp-workspaces' ); ?>
+					<?php esc_html_e( 'Switch to "Default" Workspace', 'wp-workspaces' ); ?>
 				</a>
 				<a href="<?php echo esc_url( admin_url() ); ?>" class="button">
 					<?php esc_html_e( 'Go to Dashboard', 'wp-workspaces' ); ?>

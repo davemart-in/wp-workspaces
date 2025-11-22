@@ -32,6 +32,8 @@
 	align-items: center;
 	margin-right: 8px;
 	line-height: 1;
+	color: inherit;
+	opacity: 0.6;
 }
 
 #wpadminbar #wp-admin-bar-wp-workspace-switcher .wp-workspace-icon::before {
@@ -40,6 +42,7 @@
 	line-height: 1;
 	width: 20px;
 	height: 20px;
+	color: inherit;
 }
 
 /* Label styling */
@@ -61,31 +64,9 @@
 	gap: 8px;
 }
 
+/* Hide icons in dropdown menu items */
 #wpadminbar .wp-workspace-item .dashicons {
-	width: 20px;
-	height: 20px;
-	font-size: 20px;
-	line-height: 1;
-	display: inline-block;
-}
-
-#wpadminbar .wp-workspace-item .dashicons::before {
-	font-family: dashicons;
-	display: inline-block;
-	line-height: 1;
-	font-weight: 400;
-	font-style: normal;
-	speak: never;
-	text-decoration: inherit;
-	text-transform: none;
-	text-rendering: auto;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	width: 20px;
-	height: 20px;
-	font-size: 20px;
-	vertical-align: top;
-	text-align: center;
+	display: none;
 }
 
 /* Loading state */
@@ -93,41 +74,6 @@ body.wp-workspace-switching {
 	cursor: wait;
 	pointer-events: none;
 	opacity: 0.7;
-}
-
-/* ==========================================================================
-   Workspace Color Accents
-   ========================================================================== */
-
-/* Subtle color indicator on bottom border */
-#wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
-	border-bottom: 1px solid transparent;
-	transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-/* All Workspace - Default Gray */
-.admin-workspace-all #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
-	border-bottom-color: #a0a0a0;
-}
-
-/* Write Workspace - Blue */
-.admin-workspace-write #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
-	border-bottom-color: #2196f3;
-}
-
-/* Design Workspace - Purple */
-.admin-workspace-design #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
-	border-bottom-color: #9c27b0;
-}
-
-/* Commerce Workspace - Green */
-.admin-workspace-commerce #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
-	border-bottom-color: #4caf50;
-}
-
-/* Manage Workspace - Orange */
-.admin-workspace-manage #wpadminbar #wp-admin-bar-wp-workspace-switcher > .ab-item {
-	border-bottom-color: #ff9800;
 }
 
 /* ==========================================================================

@@ -170,9 +170,9 @@ class WP_Workspace_Registry {
 	 * Register default workspaces.
 	 */
 	public function register_default_workspaces() {
-		// All Workspace - shows everything.
+		// Default Workspace - shows everything.
 		$this->register( 'all', array(
-			'label'            => __( 'All', 'wp-workspaces' ),
+			'label'            => __( 'Default', 'wp-workspaces' ),
 			'icon'             => 'dashicons-admin-generic',
 			'sidebar_items'    => array(), // Empty means show all.
 			'admin_bar_items'  => array(), // Empty means show all.

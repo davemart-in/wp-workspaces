@@ -87,11 +87,9 @@
 					// Update active state in menu.
 					$('#wpadminbar .wp-workspace-item').removeClass('active');
 					$('#wpadminbar .wp-workspace-item[data-workspace="' + workspaceId + '"]').addClass('active');
-					
-					// Update the switcher label and icon.
+
+					// Update the switcher label (icon stays the same).
 					var workspace = response.data.workspace;
-					$('#wp-admin-bar-wp-workspace-switcher .wp-workspace-icon')
-						.attr('class', 'wp-workspace-icon ' + workspace.icon);
 					$('#wp-admin-bar-wp-workspace-switcher .wp-workspace-label')
 						.text(workspace.label);
 					
