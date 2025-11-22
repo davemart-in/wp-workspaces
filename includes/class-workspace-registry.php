@@ -212,6 +212,8 @@ class WP_Workspace_Registry {
 			'icon'             => 'dashicons-admin-appearance',
 			'sidebar_items'    => array(
 				'themes.php',         // Appearance
+				'customize.php',      // Customize (if available)
+				'site-editor.php',    // Editor (Site Editor/FSE)
 				'upload.php',         // Media
 			),
 			'admin_bar_items'  => array(
@@ -256,9 +258,25 @@ class WP_Workspace_Registry {
 			'icon'             => 'dashicons-admin-tools',
 			'sidebar_items'    => array(
 				'users.php',          // Users
+				'user-new.php',       // Add New User
+				'profile.php',        // Profile
 				'tools.php',          // Tools
+				'import.php',         // Import
+				'export.php',         // Export
+				'site-health.php',    // Site Health
+				'export-personal-data.php', // Export Personal Data
+				'erase-personal-data.php',  // Erase Personal Data
 				'options-general.php', // Settings
+				'options-writing.php', // Settings > Writing
+				'options-reading.php', // Settings > Reading
+				'options-discussion.php', // Settings > Discussion
+				'options-media.php',  // Settings > Media
+				'options-permalink.php', // Settings > Permalinks
+				'options-privacy.php', // Settings > Privacy
 				'plugins.php',        // Plugins
+				'plugin-install.php', // Add Plugins
+				'plugin-editor.php',  // Plugin File Editor
+				'theme-editor.php',   // Theme File Editor
 				'update-core.php',    // Updates
 			),
 			'admin_bar_items'  => array(
