@@ -53,6 +53,24 @@
 	vertical-align: middle;
 }
 
+/* Workspace dropdown header */
+#wpadminbar .wp-workspace-header .ab-item {
+	padding: 0 12px 4px;
+	cursor: default;
+	pointer-events: none;
+}
+
+#wpadminbar .wp-workspace-header .ab-item:hover {
+	background: transparent;
+}
+
+#wpadminbar .wp-workspace-header .wp-workspace-header-text {
+	color: #999;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
 /* Workspace dropdown items */
 #wpadminbar .wp-workspace-item.active .ab-item {
 	background: rgba(255, 255, 255, 0.1);

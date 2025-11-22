@@ -181,6 +181,17 @@ class WP_Workspaces_Admin {
 			),
 		));
 
+		// Add header to the dropdown.
+		$wp_admin_bar->add_node( array(
+			'parent' => 'wp-workspace-switcher',
+			'id'     => 'wp-workspace-header',
+			'title'  => '<span class="wp-workspace-header-text">' . esc_html__( 'Available workspaces:', 'wp-workspaces' ) . '</span>',
+			'href'   => false,
+			'meta'   => array(
+				'class' => 'wp-workspace-header',
+			),
+		));
+
 		// Add each workspace as a submenu item.
 		foreach ( $workspaces as $workspace_id => $workspace ) {
 			$is_active = ( $workspace_id === $active_workspace );
@@ -188,7 +199,7 @@ class WP_Workspaces_Admin {
 			$wp_admin_bar->add_node( array(
 				'parent' => 'wp-workspace-switcher',
 				'id'     => 'wp-workspace-' . $workspace_id,
-				'title'  => '<span class="dashicons ' . esc_attr( $workspace['icon'] ) . '"></span> <span class="wp-workspace-label-text">' . esc_html( $workspace['label'] ) . ' Workspace</span>',
+				'title'  => '<span class="dashicons ' . esc_attr( $workspace['icon'] ) . '"></span> <span class="wp-workspace-label-text">' . esc_html( $workspace['label'] ) . '</span>',
 				'href'   => '#workspace-' . esc_attr( $workspace_id ),
 				'meta'   => array(
 					'class'    => 'wp-workspace-item' . ( $is_active ? ' active' : '' ),
